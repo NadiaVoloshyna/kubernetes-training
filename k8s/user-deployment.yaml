@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      component: user-service
+  template:
+    metadata:
+      labels:
+        component: user-service
+    spec:
+      containers:
+        - name: user
+          image: nadiiavol/user-service
+          ports:
+            - containerPort: 3000
+          env:
+            - name: REDIS_HOST
+              value: redis-cluster-ip-service
+            - name: REDIS_PORT
+              value: "6379"
+            - name: DATABASE_USERNAME
+              value: mongo
+            - name: DATABASE_HOST
+              value: mongo-cluster-ip-service
+            - name: DATABASE_PORT
+              value: "27017"
+            - name: DATABASE_NAME
+              value: users
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: databasepassword
+                  key: DATABASE_PASSWORD

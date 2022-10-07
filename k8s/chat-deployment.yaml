@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chat-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: chat-service
+  template:
+    metadata:
+      labels:
+        component: chat-service
+    spec:
+      containers:
+        - name: chat
+          image: nadiiavol/chat-service
+          ports:
+            - containerPort: 3001

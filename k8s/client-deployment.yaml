@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      component: web
+  template:
+    metadata:
+      labels:
+        component: web
+    spec:
+      containers:
+        - name: client
+          image: nadiiavol/client-app
+          ports:
+            - containerPort: 80
+          env:
+            - name: USER_HOST
+              value: user-cluster-ip-service
+            - name: USER_PORT
+              value: "3000"
+            - name: CHAT_HOST
+              value: chat-cluster-ip-service
+            - name: CHAT_PORT
+              value: "3001"
